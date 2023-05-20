@@ -179,7 +179,9 @@ TEST_SUITE("Classes initialization tests and Team modification( add(),stillAlive
 
         Team team1{captain};
         CHECK_THROWS_AS(Team{captain},std::runtime_error);
+        
         CHECK_THROWS_AS(Team2{captain},std::runtime_error);
+        
 
         Team team2{captain2};
         CHECK_THROWS_AS(Team{captain2},std::runtime_error);
@@ -222,10 +224,13 @@ TEST_SUITE("Battle related methods") {
         };
 
         shoot(6);
-        CHECK_FALSE(cowboy->hasboolets());
-        CHECK_NOTHROW(cowboy->shoot(target)); // This should not damage the target
-        cowboy->reload();
 
+        
+        CHECK_FALSE(cowboy->hasboolets());
+        
+        CHECK_NOTHROW(cowboy->shoot(target)); // This should not damage the target
+        
+        cowboy->reload();
         shoot(2);
         cowboy->reload();
         shoot(6);
@@ -340,7 +345,7 @@ TEST_SUITE("Battle related methods") {
         YoungNinja young2{"Bob", Point{0, 0}};
         Cowboy cowboy2{"Bob", Point{0, 0}};
         TrainedNinja trained2("Bob", Point{0, 0});
-
+        
         while (old2.isAlive()) {
             young.slash(&old2);
         }
@@ -352,18 +357,19 @@ TEST_SUITE("Battle related methods") {
         while (trained2.isAlive()) {
             young.slash(&trained2);
         }
-
+        
         while (cowboy2.isAlive()) {
             young.slash(&cowboy2);
         }
 
-
+        
         // Attacking a dead character
         CHECK_THROWS_AS(young.slash(&old2), std::runtime_error);
+
         CHECK_THROWS_AS(cowboy.shoot(&old2), std::runtime_error);
+        
         CHECK_THROWS_AS(trained.slash(&cowboy2), std::runtime_error);
         CHECK_THROWS_AS(old.slash(&cowboy2), std::runtime_error);
-
         // Calling the attacking method of a dead character
         CHECK_THROWS_AS(young2.slash(&old), std::runtime_error);
         CHECK_THROWS_AS(cowboy2.shoot(&old), std::runtime_error);
@@ -376,9 +382,10 @@ TEST_SUITE("Battle related methods") {
         auto ninja = create_tninja();
         Team team{cowboy};
         Team2 team2{ninja};
-
+        
         CHECK_THROWS_AS(team.attack(nullptr), std::invalid_argument);
         CHECK_THROWS_AS(team2.attack(nullptr), std::invalid_argument);
+        
     }
 
     TEST_CASE("Sending negative value to hit()") {
@@ -506,7 +513,7 @@ TEST_SUITE("Battle simulations") {
         auto team2_c3 = create_cowboy(3, 0);//
         auto team_c3 = create_cowboy(5, 0);//
         auto team2_c4 = create_cowboy(-5, 0);
-
+        
         Team team1{team_c1};
         team1.add(team_c2);
         team1.add(team_c3);
@@ -514,33 +521,35 @@ TEST_SUITE("Battle simulations") {
         team2.add(team2_c1);
         team2.add(team2_c3);
         team2.add(team2_c4);
-
+        
         multi_attack(4, team1, team2);
 
         // The captain of team2 is the closest enemy to the captain of team1, and therefore should be dead.
         CHECK((!team2_c2->isAlive() && team2_c1->isAlive() && team2_c3->isAlive() && team2_c4->isAlive()));
-
+        
         // At this point, the captain should be team2_c3; hence, the next enemy to be attacked by team2 should team_c3.
         multi_attack(6, team2, team1);
+        
         CHECK((!team_c3->isAlive() && team_c1->isAlive() && team_c2->isAlive()));
-
-
+        
+        
         // Killing the new captain
         while (team2_c3->isAlive()) {
             team_c1->reload();
             team_c1->shoot(team2_c3);
         }
-
+        
         CHECK((!team2_c2->isAlive() && team2_c1->isAlive() && !team2_c3->isAlive() && team2_c4->isAlive()));
 
         //Next captain should be team2_c1, hence, the next enemy to be attacked by team2 should team_cc.
         multi_attack(7, team2, team1);
         CHECK((!team_c3->isAlive() && team_c1->isAlive() && !team_c2->isAlive()));
-
+        
         while (team1.stillAlive() && team2.stillAlive()) {
             team1.attack(&team2);
             team2.attack(&team1);
         }
+        
     }
 
 
