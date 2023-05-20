@@ -11,7 +11,7 @@
 
 class Team {
 
-protected:
+private:
 vector<Character*> warriors;
 Character* leader;
 
@@ -27,8 +27,13 @@ virtual void print();
 Character* newLeader();
 Character* target(Team* enemyTeam);
 virtual ~Team();
+Team(const Team& other);
 Team& operator=(const Team& other);
 
+vector<Character*> getWarriors(){return this->warriors;}
+Team& operator=(Team&& other) noexcept;
+Character* getLeader(){return this->leader;}
+void setLeader(Character* leader){this->leader = leader;}
 };
 
 #endif

@@ -24,7 +24,6 @@ SmartTeam::SmartTeam(SmartTeam* team):Team(team->leader)
 
 void SmartTeam::attack(Team* enemyTeam)
 {
-    cout << "INSIDE ATTACK SMARTEAM" << endl;
     if (enemyTeam == nullptr)
     {
         __throw_invalid_argument("nullptr as team pointer");
@@ -33,23 +32,22 @@ void SmartTeam::attack(Team* enemyTeam)
     {
         throw("All team players are dead");
     }
-    cout << "leader name : " << leader->getName() << endl;
-    cout << "team2 num warriors alive : " << this->stillAlive() << endl;
-    cout << "team1 num warriors alive : " << enemyTeam->stillAlive() << endl;
     
     //determine new leader
     if (!this->leader->isAlive())
     {
         this->leader = newLeader();
     }
-    cout << "I AM HERE" << endl;
     
     Character* target = this->target(enemyTeam);
-    cout << this->warriors.size() << endl << endl;
+    Character* ourWarriorUnderAttack = enemyTeam->target(this);
+    if (dynamic_cast<Ninja*>(ourWarriorUnderAttack))
+    {
+        
+    }
     for(Character* warrior : this->warriors)
     {
-        cout << "TEAM2 ATTACK FUNCTION " << endl;
-        cout << "TARGET NAME IS " << target->getName() << endl;
+        
         if (warrior->isAlive())
         {
             //if warrior is cowboy.
@@ -68,14 +66,12 @@ void SmartTeam::attack(Team* enemyTeam)
             //if warrior is ninja
             else if(dynamic_cast<Ninja*>(warrior))
             {
-                cout << "INSIDE NINJA FUNCTION" << endl;
                 Ninja* NinjaW = ((Ninja*)warrior);
                 if (NinjaW->slash(target) == false) // didn't succes to slash - too far
                 {
                     NinjaW->move(target);
                 }
             }
-            cout << "TARGET LIFE POINT : " << target->getLifeLevel() << endl;
             //target died from Character attack.
             if (!target->isAlive())
             {
@@ -89,6 +85,16 @@ void SmartTeam::attack(Team* enemyTeam)
         }
     }
 }
+
+Point SmartTeam::bestPoint(Team* enemyTeam , Character* warrior)
+{
+    if (dynamic_cast<Ninja*>(warrior))
+    {
+        Ninja* ninjaW = ((Ninja*)warrior);
+    }
+    return Point(0,0);
+}
+
 void SmartTeam::print()
 {
     for(Character* warrior : warriors)

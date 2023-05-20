@@ -6,18 +6,18 @@ Team2::Team2(Character* leader):Team(leader)
 }
 
 //copy constructor
-Team2::Team2(Team2* team2):Team(team2->leader)
+Team2::Team2(Team2* team2):Team(team2->getLeader())
 {
     if (team2 == nullptr)
     {
         throw("given null pointer");
     }
     
-    for (Character* warrior : this->warriors) {
+    for (Character* warrior : team2->getWarriors()) {
         delete warrior;
     }
-    for (Character* warrior : team2->warriors) {
-        this->warriors.push_back(warrior);
+    for (Character* warrior : team2->getWarriors()) {
+        team2->getWarriors().push_back(warrior);
     }
 }
 
@@ -32,20 +32,17 @@ void Team2::attack(Team* enemyTeam)
     {
         throw("All team players are dead");
     }
-    cout << "leader name : " << leader->getName() << endl;
-    cout << "team2 num warriors alive : " << this->stillAlive() << endl;
-    cout << "team1 num warriors alive : " << enemyTeam->stillAlive() << endl;
     
     //determine new leader
-    if (!this->leader->isAlive())
+    if (!this->getLeader()->isAlive())
     {
-        this->leader = newLeader();
+        setLeader(newLeader());
     }
     cout << "I AM HERE" << endl;
     
     Character* target = this->target(enemyTeam);
-    cout << this->warriors.size() << endl << endl;
-    for(Character* warrior : this->warriors)
+    cout << this->getWarriors().size() << endl << endl;
+    for(Character* warrior : this->getWarriors())
     {
         cout << "TEAM2 ATTACK FUNCTION " << endl;
         cout << "TARGET NAME IS " << target->getName() << endl;
@@ -91,7 +88,7 @@ void Team2::attack(Team* enemyTeam)
 
 void Team2::print()
 {
-    for(Character* warrior : warriors)
+    for(Character* warrior : this->getWarriors())
     {
         cout << warrior->print() << endl;
     }

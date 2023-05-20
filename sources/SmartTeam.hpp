@@ -13,6 +13,7 @@ SmartTeam(Character* leader);
 SmartTeam(SmartTeam* team);
 void attack(Team* enemyTeam) override;
 void print() override;
+Point bestPoint(Team* enemyTeam , Character* warrior);
 };
 
 #endif

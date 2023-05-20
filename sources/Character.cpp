@@ -68,6 +68,32 @@ Character::Character(const Character& character)
 {
     
 }
+// Move constructor
+Character::Character(Character&& character) noexcept
+    : name(std::move(character.name)),location(std::move(character.location)),
+      lifeLevel(character.lifeLevel),inTeam(character.inTeam)
+{
+    character.lifeLevel = 0;
+    character.inTeam = false;
+}
+// Move assignment operator
+Character& Character::operator=(Character&& other) noexcept
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    name = std::move(other.name);
+    location = std::move(other.location);
+    lifeLevel = other.lifeLevel;
+    inTeam = other.inTeam;
+
+    other.lifeLevel = 0;
+    other.inTeam = false;
+
+    return *this;
+}
+
 Character& Character::operator=(const Character& other)
 {
     if (this == &other) {

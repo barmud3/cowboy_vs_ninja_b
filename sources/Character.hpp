@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "Point.hpp"
-#include "string.h"
+#include <string>
 using namespace std;
 
 class Character{
@@ -30,6 +30,8 @@ class Character{
     //copy constructor
     Character(const Character& charcter);
     Character& operator=(const Character& character);
+    Character& operator=(Character&& other) noexcept;
+    Character(Character&& character) noexcept;
     virtual ~Character();
 
 };

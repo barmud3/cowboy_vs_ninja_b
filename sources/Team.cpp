@@ -44,12 +44,39 @@ Team& Team::operator=(const Team& other)
     }
     return *this;
 }
+
+// Move assignment operator
+Team& Team::operator=(Team&& other) noexcept {
+    if (this == &other) {
+        return *this; // Handle self-assignment
+    }
+
+    // Delete existing warriors
+    for (Character* warrior : warriors) {
+        delete warrior;
+    }
+    warriors.clear();
+
+    // Move the leader
+    delete leader;
+    this->leader = other.leader;
+    other.leader = nullptr;
+
+    // Move the warriors
+    this->warriors = std::move(other.warriors);
+    other.warriors.clear();
+
+    return *this;
+}
+
 Team::~Team()
 {
     for (Character* warrior : this->warriors) {
         delete warrior;
     }
 }
+
+
 
 
 void Team::add(Character* newWarrior)
